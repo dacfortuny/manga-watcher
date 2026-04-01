@@ -1,0 +1,17 @@
+[project]
+name = "manga-watcher"
+version = "1.0.0"
+description = "Detector of new manga releases based on a watch list."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "beautifulsoup4==4.12.3",
+    "requests==2.32.3",
+]
+
+[dependency-groups]
+dev = [
+    "isort>=7.0.0",
+    "jupyterlab>=4.5.1",
+    "jupytext>=1.18.1",
+]
