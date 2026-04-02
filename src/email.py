@@ -2,8 +2,11 @@ import os
 import smtplib
 from email.message import EmailMessage
 
+from dotenv import load_dotenv
+
 from src.global_variables import CALENDAR_URL
 
+load_dotenv()
 
 def send_email(changes: list[str]):
     """

@@ -1,4 +1,9 @@
 .DS_Store
 .ipynb_checkpoints/
 .python-version
+*.egg-info/
+.env
+.venv/
 state.json
+__pycache__/
+*.pyc

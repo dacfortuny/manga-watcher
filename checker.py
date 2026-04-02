@@ -83,7 +83,7 @@ def main():
     old_state = load_state()
     changes = compute_changes(old_state, new_state)
 
-    if changes:
+    if changes["entries_added"] or changes["entries_removed"]:
         send_email(changes)
 
     save_state(new_state)
