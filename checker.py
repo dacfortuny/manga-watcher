@@ -76,7 +76,12 @@ def main():
         url = calendar_url_for(month, year)
         checked_urls.append(url)
 
-        lines = fetch_calendar_lines(url)
+        try:
+            lines = fetch_calendar_lines(url)
+        except Exception as e:
+            print(f"Warning: failed to fetch {url}: {e}")
+            continue
+
         month_state = extract_watch_entries(lines, watch)
         new_state = merge_states(new_state, month_state)
 
@@ -84,7 +89,10 @@ def main():
     changes = compute_changes(old_state, new_state)
 
     if changes["entries_added"] or changes["entries_removed"]:
-        send_email(changes)
+        try:
+            send_email(changes)
+        except Exception as e:
+            print(f"Warning: failed to send email: {e}")
 
     save_state(new_state)
 

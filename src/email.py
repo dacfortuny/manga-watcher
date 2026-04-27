@@ -8,12 +8,17 @@ from src.global_variables import CALENDAR_URL
 
 load_dotenv()
 
-def send_email(changes: list[str]):
+def send_email(changes: dict[str, list[str]]):
     """
     Send an email with the given changes.
     Args:
         changes (dict[str, list[str]]): A dictionary with lists of added and removed entries.
     """
+
+    required = ["SMTP_HOST", "SMTP_USER", "SMTP_PASS", "EMAIL_TO"]
+    missing = [k for k in required if not os.environ.get(k)]
+    if missing:
+        raise EnvironmentError(f"Missing required environment variables: {', '.join(missing)}")
 
     smtp_host = os.environ["SMTP_HOST"]
     smtp_port = int(os.environ.get("SMTP_PORT", "587"))
@@ -45,8 +50,6 @@ def send_email(changes: list[str]):
     content_parts.append(f"Source: {CALENDAR_URL}")
     
     msg.set_content("\n".join(content_parts))
-
-    #print(msg)
 
     with smtplib.SMTP(smtp_host, smtp_port) as s:
         s.starttls()

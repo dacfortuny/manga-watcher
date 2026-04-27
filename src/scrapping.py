@@ -71,9 +71,11 @@ def extract_watch_entries(lines: list[str], watch: list[str]) -> dict[str, list[
         # Detect items
         item = ln.strip()
         if current_date and item.startswith("-"):
-            for w in watch:
-                if w.strip().lower() in item.strip().lower():
-                    results[w].add((current_date, item))
+            item_lower = item.strip().lower()
+            matches = [w for w in watch if w.strip().lower() in item_lower]
+            if matches:
+                best = max(matches, key=len)
+                results[best].add((current_date, item))
 
     # Convert sets to sorted lists so they can be serialized as JSON
     return {k: sorted([list(x) for x in v]) for k, v in results.items()}
