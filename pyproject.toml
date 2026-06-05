@@ -15,4 +15,8 @@ dev = [
     "isort>=7.0.0",
     "jupyterlab>=4.5.1",
     "jupytext>=1.18.1",
+    "pytest>=8.0",
 ]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
