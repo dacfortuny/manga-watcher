@@ -18,6 +18,7 @@ def compute_changes(old: dict, new: dict) -> list[str]:
     entries_added = []
     entries_removed = []
 
+    today = date.today()
     added = set()
     removed = set()
     for title in new:
@@ -25,7 +26,11 @@ def compute_changes(old: dict, new: dict) -> list[str]:
         new_set = set(tuple(x) for x in new.get(title, []))
 
         added = added.union(new_set - old_set)
-        removed = removed.union(old_set - new_set)
+        # Ignore removals for dates already in the past — they fell off the scrape window, not cancelled
+        removed = removed.union(
+            (date_str, item) for date_str, item in (old_set - new_set)
+            if parse_spanish_date(date_str) >= today
+        )
 
     added_dt = [(parse_spanish_date(date_str), date_str, item) for date_str, item in added]
     added_dt.sort(key=lambda x: (x[0], x[2]))
